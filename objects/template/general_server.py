@@ -1,13 +1,16 @@
 from socket import create_server, socket
 
 from protocol import Protocol
-from objects.template import Event
+from objects.template import Event, Handle
 
 
 class ClientHandle:
     def __init__(self, connection: socket, address: tuple[str, int]):
         self.connection: socket = connection
         self.address: tuple[str, int] = address
+
+    def __str__(self):
+        return ':'.join(self.address)
 
 
 class GeneralServer:
@@ -30,7 +33,17 @@ class GeneralServer:
         self.closed()
 
     def accept(self):
-        pass
+        try:
+            connection, address = self.server.accept()
+
+        except TimeoutError:
+            return False
+
+        new_client = ClientHandle(connection, address)
+        self.clients.add(new_client)
+        self.client_join(new_client, handle=Handle(), sender=self)
+
+        return True
 
     def receive(self):
         pass

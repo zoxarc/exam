@@ -1,6 +1,6 @@
-from letter import Letter
-from dletter import DLetter
-from note import Note
+from objects.note import Note
+from objects.letter import Letter
+from objects.dletter import DLetter
 
 __all__ = [
     'Letter',
