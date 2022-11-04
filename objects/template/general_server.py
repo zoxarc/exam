@@ -45,8 +45,8 @@ class GeneralServer:
         # events
         self.client_message: Event = Event()
         self.server_message: Event = Event()
-        self.client_join: Event = Event()  # TODO: add client join / leave calls
-        self.client_leave: Event = Event()
+        self.client_join: Event = Event()
+        self.client_leave: Event = Event()  # TODO: check when client leaves
         self.starting: Event = Event()
         self.closing: Event = Event()
         self.closed: Event = Event()
