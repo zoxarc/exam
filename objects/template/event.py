@@ -5,11 +5,7 @@ from objects.type_hints import delegate, func
 
 class Event:
     def __init__(self):
-        # type hints
-        self.delegate: delegate
-
-        #
-        self.delegate = set()
+        self.delegate: delegate = set()
 
     def __add__(self, other: func) -> Event:
         self.delegate.add(other)

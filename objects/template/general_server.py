@@ -6,38 +6,25 @@ from objects.template import Event
 
 class ClientHandle:
     def __init__(self, connection: socket, address: tuple[str, int]):
-        # type hints
-        self.connection: socket
-        self.address: tuple[str, int]
-
-        #
-        self.connection = connection
-        self.address = address
+        self.connection: socket = connection
+        self.address: tuple[str, int] = address
 
 
 class GeneralServer:
     def __init__(self):
-        # type hints
-
-        self.server: socket
-        self.clients: set[ClientHandle]
-
-        self.client_message: Event
-        self.starting: Event
-        self.closing: Event
-        self.closed: Event
-
-        #
-        self.server = create_server(Protocol.ADDRESS)
+        self.server: socket = create_server(Protocol.ADDRESS)
         self.server.settimeout(Protocol.SERVER_TIMEOUT)
 
-        self.clients = set()
+        self.clients: set[ClientHandle] = set()
 
         # events
-        self.client_message = Event()
-        self.starting = Event()
-        self.closing = Event()
-        self.closed = Event()
+        self.client_message: Event = Event()
+        self.server_message: Event = Event()
+        self.client_join: Event = Event()
+        self.client_leave: Event = Event()
+        self.starting: Event = Event()
+        self.closing: Event = Event()
+        self.closed: Event = Event()
 
     def __del__(self):
         self.closed()
