@@ -42,3 +42,18 @@ class GeneralClient:
     def connect(self):
         self.client.connect(Protocol.ADDRESS)
         self.join()
+
+    def event(self, name: str):
+        def wrapper(func):
+            try:
+                event = self.__getattribute__(name)
+
+            except AttributeError:
+                raise AttributeError(f'invalid event name "{name}"')
+
+            event += func
+
+            return func
+
+        return wrapper
+
