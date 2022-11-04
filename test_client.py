@@ -1,26 +1,17 @@
-import socket
-from pickle import dumps, loads
-
-from protocol import Protocol
+from objects.template import GeneralClient
 
 
-client = socket.socket()
-client.connect(Protocol.ADDRESS)
+client = GeneralClient()
 
 
-while msg := input():
-    stream = dumps(msg)
+if __name__ == '__main__':
+    client.connect()
 
-    client.send(len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER))
-    client.send(stream)
+    while msg := input():
+        client.send(msg)
+        response = client.receive()
 
-    size = client.recv(Protocol.SIZE_BUFFER)
-    size = int.from_bytes(size, Protocol.BYTE_ORDER)
+        print(response)
 
-    stream = client.recv(size)
-    response = loads(stream)
-
-    print(response)
-
-    if msg == "exit":
-        break
+        if msg == "exit":
+            break
