@@ -1,14 +1,22 @@
-from objects.template import Event, Handle
+from objects.template import GeneralServer
 
 
-def test(handle: Handle):
-    handle()
+class TestServer(GeneralServer):
+    def __init__(self):
+        super(TestServer, self).__init__()
+
+        self.client_message += self.on_client_message
+        self.starting += self.on_server_start
+
+    @staticmethod
+    def on_client_message(data, **kwargs):
+        print(data)
+
+    @staticmethod
+    def on_server_start(**kwargs):
+        print("server started")
 
 
 if __name__ == '__main__':
-    test_event = Event()
-    test_event += test
-
-    args = Handle()
-    test_event(args)
-    print(args.value)
+    s = TestServer()
+    s.main_loop()

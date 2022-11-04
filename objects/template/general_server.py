@@ -16,6 +16,10 @@ class ClientHandle:
 
     def receive(self):
         size = self.connection.recv(Protocol.SIZE_BUFFER)
+
+        if size == b'':
+            raise TimeoutError
+
         size = int.from_bytes(size, Protocol.BYTE_ORDER)
         stream = self.connection.recv(size)
         return loads(stream)
@@ -40,14 +44,14 @@ class GeneralServer:
         # events
         self.client_message: Event = Event()
         self.server_message: Event = Event()
-        self.client_join: Event = Event()
+        self.client_join: Event = Event()  # TODO: add client join / leave calls
         self.client_leave: Event = Event()
         self.starting: Event = Event()
         self.closing: Event = Event()
         self.closed: Event = Event()
 
     def __del__(self):
-        self.closed()
+        self.closed(sender=self, handled=Handle())
 
     def accept(self):
         try:
@@ -73,6 +77,8 @@ class GeneralServer:
             self.client_message(data, handled=Handle(), sender=self)
 
     def main_loop(self):
+        self.starting(sender=self, handled=Handle())
+
         while self.running:
             self.accept()
             self.receive_all()
