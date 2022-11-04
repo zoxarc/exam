@@ -1,9 +1,9 @@
 from letter import Letter
 from dletter import DLetter
-from paper import Paper
+from note import Note
 
 __all__ = [
     'Letter',
     'DLetter',
-    'Paper'
+    'Note'
 ]
