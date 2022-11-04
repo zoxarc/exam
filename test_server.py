@@ -1,22 +1,24 @@
 from objects.template import GeneralServer
 
 
-class TestServer(GeneralServer):
-    def __init__(self):
-        super(TestServer, self).__init__()
+s = GeneralServer()
 
-        self.client_message += self.on_client_message
-        self.starting += self.on_server_start
 
-    @staticmethod
-    def on_client_message(data, **kwargs):
-        print(f"message received: {data}")
+@s.event("client_join")
+def on_client_join(client, handle):
+    print(f'{client} connected')
+    handle()
 
-    @staticmethod
-    def on_server_start(**kwargs):
-        print("server started")
+
+@s.event("client_message")
+def on_client_message(message, sender, handle):
+    print(f'{sender} -> {message}')
+
+    if message == "exit":
+        s.running = False
+
+    handle()
 
 
 if __name__ == '__main__':
-    s = TestServer()
     s.main_loop()

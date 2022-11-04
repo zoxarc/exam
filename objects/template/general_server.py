@@ -12,7 +12,7 @@ class ClientHandle:
         self.address: tuple[str, int] = address
 
     def __str__(self):
-        return ':'.join(self.address)
+        return ':'.join(map(str, self.address))
 
     def receive(self):
         size = self.connection.recv(Protocol.SIZE_BUFFER)
@@ -25,7 +25,7 @@ class ClientHandle:
         return loads(stream)
 
     def send(self, data, sender: GeneralServer):
-        sender.server_message(data, sender=self, handled=Handle())
+        sender.server_message(data=data, handled=Handle())
 
         stream = dumps(data)
         size = len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER)
@@ -62,7 +62,7 @@ class GeneralServer:
 
         new_client = ClientHandle(connection, address)
         self.clients.add(new_client)
-        self.client_join(new_client, handle=Handle(), sender=self)
+        self.client_join(client=new_client, handle=Handle())
 
         return True
 
@@ -74,13 +74,27 @@ class GeneralServer:
             except TimeoutError:
                 continue
 
-            self.client_message(data, handled=Handle(), sender=self)
+            self.client_message(message=data, sender=client, handle=Handle())
 
     def main_loop(self):
-        self.starting(sender=self, handled=Handle())
+        self.starting(handled=Handle())
 
         while self.running:
             self.accept()
             self.receive_all()
 
-        self.closing(sender=self, handled=Handle())
+        self.closing(handled=Handle())
+
+    def event(self, name: str):
+        def wrapper(func):
+            try:
+                event = self.__getattribute__(name)
+
+            except AttributeError:
+                raise AttributeError(f'invalid event name "{name}"')
+
+            event += func
+
+            return func
+
+        return wrapper

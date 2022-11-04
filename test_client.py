@@ -8,9 +8,11 @@ client = socket.socket()
 client.connect(Protocol.ADDRESS)
 
 
-test = "msg"
+while msg := input():
+    stream = dumps(msg)
 
-stream = dumps(test)
+    client.send(len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER))
+    client.send(stream)
 
-client.send(len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER))
-client.send(stream)
+    if msg == "exit":
+        break
