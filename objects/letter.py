@@ -1,16 +1,10 @@
-from objects.note import Note
+from objects import Note
 
 
 class Letter:
     def __init__(self, notes: list[Note]):
         self.notes = notes
 
-    def status(self):
-        if not self.notes:
-            return "empty", None
-
-        elif len(self.plist)>5 or len(set(self.plist)) == 1:
-            return (False, null)
-
-        else: return (True ,plist[0])
-
+    def status(self) -> tuple[bool, None | str]:
+        valid = 0 < len(self.notes) < 6 and len(set(note.party for note in self.notes)) == 1
+        return valid, self.notes[0].party if valid else None
