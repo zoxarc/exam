@@ -1,9 +1,11 @@
 from __future__ import annotations
+from typing import Literal
 from socket import create_server, socket
 from pickle import dumps, loads
 
 from protocol import Protocol
 from objects.template import Event, Handle
+from objects.type_hints import func
 
 
 class ClientHandle:
@@ -86,16 +88,18 @@ class GeneralServer:
 
         self.closing(handled=Handle())
 
-    def event(self, name: str):
-        def wrapper(func):
+    def event(self, name: Literal[
+        "client_message", "server_message", "client_join", "client_leave", "starting", "closing", "closed"
+    ]) -> func:
+        def wrapper(f):
             try:
                 event = self.__getattribute__(name)
 
             except AttributeError:
                 raise AttributeError(f'invalid event name "{name}"')
 
-            event += func
+            event += f
 
-            return func
+            return f
 
         return wrapper
