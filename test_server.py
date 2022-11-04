@@ -10,7 +10,7 @@ class TestServer(GeneralServer):
 
     @staticmethod
     def on_client_message(data, **kwargs):
-        print(data)
+        print(f"message received: {data}")
 
     @staticmethod
     def on_server_start(**kwargs):
