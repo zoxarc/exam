@@ -1,4 +1,4 @@
-from objects.template import GeneralServer
+from objects.template import *
 
 
 s = GeneralServer()
@@ -11,12 +11,20 @@ def on_client_join(client, handle):
 
 
 @s.event("client_message")
-def on_client_message(message, sender, handle):
+def on_client_message(message: str, sender: ClientHandle, handle: Handle):
     print(f'{sender} -> {message}')
+
+    sender.send(message)
 
     if message == "exit":
         s.running = False
 
+    handle()
+
+
+@s.event("server_message")
+def on_server_message(message: str, target: ClientHandle, handle: Handle):
+    print(f"{target} <- {message}")
     handle()
 
 

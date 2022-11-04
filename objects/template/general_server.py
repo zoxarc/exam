@@ -7,9 +7,10 @@ from objects.template import Event, Handle
 
 
 class ClientHandle:
-    def __init__(self, connection: socket, address: tuple[str, int]):
+    def __init__(self, connection: socket, address: tuple[str, int], owner: GeneralServer):
         self.connection: socket = connection
         self.address: tuple[str, int] = address
+        self.owner: GeneralServer = owner
 
     def __str__(self):
         return ':'.join(map(str, self.address))
@@ -24,10 +25,10 @@ class ClientHandle:
         stream = self.connection.recv(size)
         return loads(stream)
 
-    def send(self, data, sender: GeneralServer):
-        sender.server_message(data=data, handled=Handle())
+    def send(self, message):
+        self.owner.server_message(message=message, target=self, handle=Handle())
 
-        stream = dumps(data)
+        stream = dumps(message)
         size = len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER)
         self.connection.send(size + stream)
 
@@ -60,7 +61,7 @@ class GeneralServer:
         except TimeoutError:
             return False
 
-        new_client = ClientHandle(connection, address)
+        new_client = ClientHandle(connection, address, self)
         self.clients.add(new_client)
         self.client_join(client=new_client, handle=Handle())
 
@@ -69,12 +70,12 @@ class GeneralServer:
     def receive_all(self):
         for client in self.clients:
             try:
-                data = client.receive()
+                message = client.receive()
 
             except TimeoutError:
                 continue
 
-            self.client_message(message=data, sender=client, handle=Handle())
+            self.client_message(message=message, sender=client, handle=Handle())
 
     def main_loop(self):
         self.starting(handled=Handle())
