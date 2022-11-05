@@ -1,9 +1,9 @@
 from objects.note import Note
-from objects.letter import Letter
-from objects.dletter import DLetter
+from objects.envelope import Envelope
+from objects.double_envelope import DoubleEnvelope
 
 __all__ = [
-    'Letter',
-    'DLetter',
+    'Envelope',
+    'DoubleEnvelope',
     'Note'
 ]

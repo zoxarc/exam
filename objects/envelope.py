@@ -3,7 +3,7 @@ from typing import Optional
 from objects import Note
 
 
-class Letter:
+class Envelope:
     def __init__(self, notes: list[Note]):
         self.notes = notes
 
