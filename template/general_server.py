@@ -38,7 +38,7 @@ class ClientHandle:
         return loads(b''.join(stream))
 
     def send(self, message):
-        self.owner.server_message(message=message, target=self, handle=Handle())
+        self.owner.server_message(message=message, target=self)
 
         stream = dumps(message)
         size = len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER)
@@ -68,7 +68,7 @@ class GeneralServer:
         self.closed: Event = Event()
 
     def __del__(self):
-        self.closed(sender=self, handled=Handle())
+        self.closed(sender=self)
 
     def accept(self):
         try:
@@ -79,7 +79,7 @@ class GeneralServer:
 
         new_client = ClientHandle(connection, address, self)
         self.clients.add(new_client)
-        self.client_join(client=new_client, handle=Handle())
+        self.client_join(client=new_client)
 
         return True
 
@@ -95,10 +95,10 @@ class GeneralServer:
 
             except ConnectionResetError:
                 disconnected_clients.add(client)
-                self.client_leave(client=client, handle=Handle())
+                self.client_leave(client=client)
                 continue
 
-            self.client_message(message=message, sender=client, handle=Handle())
+            self.client_message(message=message, sender=client)
 
         self.clients = self.clients.difference(disconnected_clients)
 
@@ -111,20 +111,20 @@ class GeneralServer:
 
             except (BrokenPipeError, ConnectionResetError):
                 disconnected_clients.add(client)
-                self.client_leave(client=client, handle=Handle())
+                self.client_leave(client=client)
                 continue
 
         self.clients = self.clients.difference(disconnected_clients)
 
     def main_loop(self):
-        self.starting(handled=Handle())
+        self.starting()
 
         while self.running:
             self.accept()
             self.receive_all()
             self.ping_all()
 
-        self.closing(handled=Handle())
+        self.closing()
 
     def event(self, name: Literal[
         "client_message", "server_message", "client_join", "client_leave", "starting", "closing", "closed"

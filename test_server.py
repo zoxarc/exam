@@ -1,37 +1,38 @@
-from template import GeneralServer, ClientHandle, Handle
+import socket
+from random import randint
+
+from sock_lib import AsyncServer
+
+server = AsyncServer()
 
 
-s = GeneralServer()
+@server.event("client_message")
+async def on_client_message(sender, message):
+    await server.send_to(sender, f'{message} {randint(1, 10)}')
+
+    if message == 'exit':
+        await server.stop()
 
 
-@s.event("client_join")
-def on_client_join(client, handle):
-    print(f'{client} connected')
-    handle()
+@server.event("client_connect")
+async def on_client_connect(client: socket.socket):
+    print(f'{client.getpeername()} connected')
 
 
-@s.event("client_message")
-def on_client_message(message: str, sender: ClientHandle, handle: Handle):
-    print(f'{sender} -> {message}')
+@server.event("server_message")
+@server.event("client_message")
+async def print_messages(message, sender: socket = None, target: socket = None):
+    if sender:
+        print(f'{sender.getpeername()} -> {message}')
 
-    sender.send(message)
-
-    if message == "exit":
-        s.running = False
-
-    handle()
+    else:
+        print(f'{target.getpeername()} <- {message}')
 
 
-@s.event("client_leave")
-def on_client_leave(client, handle: Handle):
-    print(f'{client} has disconnected')
-
-
-@s.event("server_message")
-def on_server_message(message: str, target: ClientHandle, handle: Handle):
-    print(f"{target} <- {message}")
-    handle()
+@server.event("closing")
+async def on_server_closed():
+    print('server closing')
 
 
 if __name__ == '__main__':
-    s.main_loop()
+    server.main_loop()
