@@ -4,3 +4,6 @@ class Protocol:
     CLIENT_TIMEOUT = 0.1
     SIZE_BUFFER = 8
     BYTE_ORDER = "little"
+    RECEIVE_BUFFER = 4096
+    SEPERATOR = " "
+    SCREENSHOT_SIZE = (600, 600)

@@ -5,9 +5,10 @@ from objects import Note
 
 class Envelope:
     def __init__(self, notes: list[Note]):
-        self.notes = notes
+        self.notes: list[Note] = notes
 
     def status(self) -> tuple[bool, Optional[str]]:
-        # TODO: this looks so bad, someone change it
-        valid = 0 < len(self.notes) < 6 and len(set(note.party for note in self.notes)) == 1
-        return valid, self.notes[0].party if valid else None
+        parties = set(note.party for note in self.notes)
+        valid = 0 < len(self.notes) < 6 and len(parties) == 1
+
+        return valid, parties.pop() if valid else None

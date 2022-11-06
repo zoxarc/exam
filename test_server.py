@@ -1,4 +1,4 @@
-from objects.template import *
+from template import GeneralServer, ClientHandle, Handle
 
 
 s = GeneralServer()
@@ -20,6 +20,11 @@ def on_client_message(message: str, sender: ClientHandle, handle: Handle):
         s.running = False
 
     handle()
+
+
+@s.event("client_leave")
+def on_client_leave(client, handle: Handle):
+    print(f'{client} has disconnected')
 
 
 @s.event("server_message")
