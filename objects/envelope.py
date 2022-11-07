@@ -7,6 +7,7 @@ class Envelope:
     def __init__(self, notes: list[Note]):
         self.notes: list[Note] = notes
 
+
     def status(self) -> tuple[bool, Optional[str]]:
         parties = set(note.party for note in self.notes)
         valid = 0 < len(self.notes) < 6 and len(parties) == 1

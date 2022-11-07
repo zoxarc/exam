@@ -1,5 +1,6 @@
 from typing import Literal
 from pickle import loads, dumps
+from objects import Envelope
 import socket
 
 class Protocol:
@@ -9,6 +10,11 @@ class Protocol:
     SIZE_BUFFER = 8
     BYTE_ORDER: Literal["little", "big"] = "little"
     RECEIVE_BUFFER = 4
+    PARTIES = ["likud", "blue & white", "The work", "right"]
+
+    @staticmethod
+    def IsParty(data:Envelope):
+        return data.notes[0].party in Protocol.PARTIES
 
     @staticmethod
     def send_msg(my_socket, data):
