@@ -11,7 +11,7 @@ class DoubleKalpi:
     def vote(self):
         party = input(f"choose a party:\n{', '.join(Protocol.PARTIES)} ")
 
-        if Protocol.IsParty(party):
+        if Protocol.is_party(party):
             note = Note(party)
             envelope = Envelope([note])
             double_envelope = DoubleEnvelope(envelope, input("enter name: "), int(input("enter id: ")))

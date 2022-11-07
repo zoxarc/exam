@@ -3,44 +3,42 @@ from objects import Envelope
 from protocol import Protocol
 from objects import Note
 
-
 client = GeneralClient()
 
 
-@client.event("join")
-def on_join():
-    print(f'joined')
-
-def getId2():
+def get_id2():
     return input("enter your id")
 
-def getId():
-    valid = True
-    while valid:
-        valid = True
+
+def get_id():
+    valid = False
+
+    while not valid:
         try:
-            id_ = int(getId2())
+            id_ = int(get_id2())
+            valid = True
+
         except TypeError:
             print("not a valid id")
-            valid = False
+
+    # noinspection PyUnboundLocalVariable
     return id_
+
 
 def main():
     client.connect()
 
-    id_ = getId()
-    for i in Protocol.MIFLAGOT:
+    id_ = get_id()  # TODO: id not part of envelope, i think they are meant to be kept locally
+    for i in Protocol.PARTIES:
         print(i)
 
-    chosen = input("choose your miflaga: ")
+    chosen = input("choose your party: ")
     notes = [Note(chosen)]
-    env = Envelope(id_, notes)
+    # noinspection GrazieInspection
+    env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
 
-    while msg := input():
-        client.send(env)
-        response = client.receive()
+    client.send(env)
 
-        print(response)
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     main()

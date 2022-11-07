@@ -1,40 +1,44 @@
+from sock_lib import AsyncServer
+from protocol import Protocol
+
 from objects import *
-from protocol import Protocol as P
-from sock_lib import GeneralServer
-s = GeneralServer()
+import objects  # match throws an error when comparing types without prefix "objects."
+
+s = AsyncServer()
 
 
-def dcount(env: list[DoubleEnvelope]) -> dict:
+def double_count(env: list[DoubleEnvelope]) -> dict:
     global votes
-    dvoters = [a for a in env if a.id not in list(vlist.keys())]
+    double_voters = [a for a in env if a.id not in voters.keys()]  # TODO: what is this for?
 
-    for a in dvoters:
-         votes.update({a.envelope.notes[0], votes.get(a.envelope.notes[0]) + 1})
+    for a in double_voters:
+         votes[a.envelope.notes[0]] += 1
 
 
-def ncount(env: Envelope):
+def normal_count(env: Envelope):
     global votes
-    votes.update({env.notes[0], votes.get(env.notes[0]) + 1})
+    votes[env.notes[0]] += 1
 
 
 @s.event("client_message")
 async def on_client_message(sender, message):
     match type(message):
-        case Envelope:
-            if message.id not in vdict:
-                vdict.update(message.id: message.name)
-        case DoubleEnvelope:
-            ddict.update(message)
+        case objects.Envelope:
+            if message.id not in voters.items():
+                voters.update({message.id: message.name})
 
+            # TODO: non double envelopes dont contain name and id,
+            #  need to verify how they work first
 
+        case objects.DoubleEnvelope:
+            # TODO: this
 
+            pass
 
-def main():
-    s.main_loop()
 
 if __name__ == "__main__":
-    votes = {party: 0 for party in P.PARTIES}
-    vdict = {}
-    ddict = {}
-    main()
+    votes = {party: 0 for party in Protocol.PARTIES}
+    voters = {}
+    double_voters = {}  # TODO: double voters? (originally ddict) if so why redefine at double_count?
 
+    s.main_loop()
