@@ -3,6 +3,7 @@ from pickle import loads, dumps
 from objects import Envelope
 import socket
 
+
 class Protocol:
     ADDRESS = ("127.0.0.1", 8080)
     SERVER_TIMEOUT = 0.1
@@ -14,7 +15,7 @@ class Protocol:
 
     @staticmethod
     def IsParty(data:Envelope):
-        return data.notes[0].party in Protocol.PARTIES
+        return data in Protocol.PARTIES
 
     @staticmethod
     def send_msg(my_socket, data):
