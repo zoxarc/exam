@@ -5,4 +5,4 @@ class DoubleEnvelope:
     def __init__(self, envelope: Envelope, name: str, id_: int):
         self.envelope = envelope
         self.name = name
-        self.id_ = id_
+        self.id = id_
