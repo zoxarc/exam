@@ -34,7 +34,7 @@ async def on_client_message(sender, message):
         case 3:
             id_,name,env = message
             valid, party = env.status()
-            if id_ not in voters.items() and valid:
+            if id_ not in voters.keys() and valid or name == avoters.get(id_, None):
                 voters.update({id_: name})
                 normal_count(env)
                 s.running = False
@@ -49,7 +49,8 @@ async def on_client_message(sender, message):
 
 if __name__ == "__main__":
     votes = {party: 0 for party in Protocol.PARTIES}
-    voters = {}
+    voters: dict[int: str] = {}
+    avoters: dict[int: str] = {} # all who are supposed to vote
 # list of double envelopes, normal envelopes are counted while they're being recieved
 # double envelopes are counted once the program is finished
     double_envelopes = []  
