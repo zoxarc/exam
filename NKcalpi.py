@@ -15,6 +15,8 @@ def get_id():
 
     while not valid:
         try:
+            if len(id_ != 9):
+                raise TypeError
             id_ = int(get_id2())
             valid = True
 
@@ -28,7 +30,8 @@ def get_id():
 def main():
     client.connect()
 
-    id_ = get_id()  # TODO: id not part of envelope, i think they are meant to be kept locally
+    id_ = get_id()  
+    name = input("enter your name")
     for i in Protocol.PARTIES:
         print(i)
 
@@ -37,8 +40,8 @@ def main():
     # noinspection GrazieInspection
     env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
 
-    client.send(env)
+    client.send((id_,name,env))
 
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     main()
