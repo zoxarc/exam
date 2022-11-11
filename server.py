@@ -32,8 +32,7 @@ async def on_client_message(sender, message):
                 normal_count(envelope)
         case 1:
             if type(message) == str:
-            # TODO: make server shutdown
-
+                s.running = False
 
             elif type(message) == objects.DoubleEnvelope:
                 double_envelopes.append(message)
