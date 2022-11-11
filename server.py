@@ -37,11 +37,9 @@ async def on_client_message(sender, message):
             if id_ not in voters.items() and valid:
                 voters.update({id_: name})
                 normal_count(env)
-        case 1:
-            if type(message) == str:
                 s.running = False
-
-            elif type(message) == objects.DoubleEnvelope:
+        case 1:
+            if type(message) == objects.DoubleEnvelope:
                 valid, party = message.envelope.status()
                 if valid:
                     double_envelopes.append(message)
@@ -57,3 +55,5 @@ if __name__ == "__main__":
     double_envelopes = []  
 
     s.main_loop()
+    double_count(double_envelopes)
+    print(votes)

@@ -8,6 +8,7 @@ class DoubleKalpi:
     def __init__(self):
         self.client = GeneralClient()
         self.client.connect()
+        self.running = True
 
     def vote(self):
         party = None
@@ -17,6 +18,8 @@ class DoubleKalpi:
         id_ = None
         while not Protocol.is_id(id_):
             id_ = input("enter your id: ")
+            if id_ == 0:
+                self.running = False
 
         if Protocol.is_party(party):
             note = Note(party)
@@ -26,7 +29,7 @@ class DoubleKalpi:
             self.client.send(double_envelope)
 
     def run(self):
-        while True:
+        while self.running:
             self.vote()
             clear()
 
