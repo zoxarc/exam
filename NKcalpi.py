@@ -27,6 +27,7 @@ def get_id():
 
 
 def main():
+    votersdic = {123456789: "zohar", 987654321 : "yuval", 192837465 : "nerya", 918273645 : "shahar"}
     client.connect()
 
     id_ = get_id()  
@@ -38,10 +39,16 @@ def main():
     notes = [Note(chosen)]
     # noinspection GrazieInspection
     env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
-
+    wvoted(get_id(), name, votersdic)
     client.send((id_,name,env))
     sleep(0.5)
 
+def wvoted(id : int, name: str, votersdic: dict):
+    if name in votersdic.items() and  id in votersdic.keys():
+        votersdic.pop(id)
+
+
 
 if __name__ == '__main__':
+
     main()
