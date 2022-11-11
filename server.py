@@ -26,8 +26,9 @@ async def on_client_message(sender, message):
     # normal envelopes should be in a tuple containing id,name,envelope
     match len(message):
         case 3:
-            id_,name,envelope = message
-            if id_ not in voters.items():
+            id_,name,env = message
+            valid, party = env.status()
+            if id_ not in voters.items() and valid:
                 voters.update({id_: name})
                 normal_count(envelope)
         case 1:
@@ -35,7 +36,9 @@ async def on_client_message(sender, message):
                 s.running = False
 
             elif type(message) == objects.DoubleEnvelope:
-                double_envelopes.append(message)
+                valid, party = message.envelope.status()
+                if valid:
+                    double_envelopes.append(message)
 
 
 
