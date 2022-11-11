@@ -27,3 +27,4 @@ class DoubleKalpi:
 if __name__ == '__main__':
     kalpi = DoubleKalpi()
     kalpi.run()
+    print(4)
