@@ -1,4 +1,5 @@
 from template import GeneralClient
+from time import sleep
 
 
 class ByeClient:
@@ -13,4 +14,5 @@ class ByeClient:
 if __name__ == '__main__':
     client = ByeClient()
     client.bye_client()
+    sleep(10)
 

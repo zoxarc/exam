@@ -8,13 +8,21 @@ import objects  # match throws an error when comparing types without prefix "obj
 
 s = AsyncServer()
 
+with open("voters.txt", "r") as f:
+    all_voters = dict()
+
+    for line in f.readlines():
+        id_, name = line.split()
+        all_voters.update({int(id_): name})
+
 
 def double_count(env: list[DoubleEnvelope]) -> dict:
-    global votes
-    double_voters = [a for a in env if a.id not in voters.keys()]  # get all voters that haven't voted via a normal calpi
+    print(all_voters.items())
+    double_voters = [a for a in env if a.id not in voters.keys() and (a.id, a.name) in all_voters.items()]  # get all voters that haven't voted via a normal calpi
+    print(double_voters)
 
-    for a in double_envelopes:
-         votes[a.envelope.notes[0]] += 1
+    for a in double_voters:
+        votes[a.envelope.notes[0].party] += 1
 
     return None  # TODO: return something
 
@@ -38,7 +46,7 @@ async def on_client_message(sender: socket.socket, message):
         case 3:
             id_,name,env = message
             valid, party = env.status()
-            if id_ not in voters.items() and valid:
+            if id_ not in voters.items() and valid and {id_: name} in all_voters.items():
                 voters.update({id_: name})
                 normal_count(env)
                 s.running = False
@@ -47,8 +55,6 @@ async def on_client_message(sender: socket.socket, message):
                 valid, party = message.envelope.status()
                 if valid:
                     double_envelopes.append(message)
-
-    print(votes)
 
 
 if __name__ == "__main__":

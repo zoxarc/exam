@@ -13,7 +13,7 @@ class Protocol:
     PARTIES = ["likud", "blue & white", "The work", "right"]
 
     @staticmethod
-    def is_party(data:Envelope):
+    def is_party(data: str):
         return data in Protocol.PARTIES
 
     @staticmethod
