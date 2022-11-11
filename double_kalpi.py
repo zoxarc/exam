@@ -9,12 +9,18 @@ class DoubleKalpi:
         self.client = GeneralClient()
 
     def vote(self):
-        party = input(f"choose a party:\n{', '.join(Protocol.PARTIES)} ")
+        party = None
+        while not Protocol.is_party(party):
+            party = input(f"choose a party:\n{', '.join(Protocol.PARTIES)} ")
+
+        id_ = None
+        while not Protocol.is_id(id_):
+            id_ = input("enter your id: ")
 
         if Protocol.is_party(party):
             note = Note(party)
             envelope = Envelope([note])
-            double_envelope = DoubleEnvelope(envelope, input("enter name: "), int(input("enter id: ")))
+            double_envelope = DoubleEnvelope(envelope, input("enter name: "), int(id_))
 
             self.client.send(double_envelope)
 
