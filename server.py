@@ -14,23 +14,29 @@ def double_count(env: list[DoubleEnvelope]) -> dict:
     for a in double_envelopes:
          votes[a.envelope.notes[0]] += 1
 
+    return None  # TODO: return something
+
 
 def normal_count(env: Envelope):
     global votes
-    votes[env.notes[0]] += 1
+    votes[env.notes[0].party] += 1
 
 
 @s.event("client_message")
 async def on_client_message(sender, message):
     global double_envelopes
     # normal envelopes should be in a tuple containing id,name,envelope
+
+    if message == "good bye":
+        s.running = False
+
     match len(message):
         case 3:
             id_,name,env = message
             valid, party = env.status()
             if id_ not in voters.items() and valid:
                 voters.update({id_: name})
-                normal_count(envelope)
+                normal_count(env)
         case 1:
             if type(message) == str:
                 s.running = False
@@ -40,6 +46,7 @@ async def on_client_message(sender, message):
                 if valid:
                     double_envelopes.append(message)
 
+    print(votes)
 
 
 if __name__ == "__main__":

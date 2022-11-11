@@ -14,4 +14,3 @@ if __name__ == '__main__':
     client = ByeClient()
     client.bye_client()
 
-print("this is a test")

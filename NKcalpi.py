@@ -2,6 +2,7 @@ from template import GeneralClient
 from objects import Envelope
 from protocol import Protocol
 from objects import Note
+from time import sleep
 
 client = GeneralClient()
 
@@ -39,6 +40,7 @@ def main():
     env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
 
     client.send((id_,name,env))
+    sleep(0.5)
 
 
 if __name__ == '__main__':
