@@ -6,18 +6,16 @@ from objects import Note
 client = GeneralClient()
 
 
-def get_id2():
-    return input("enter your id")
-
-
 def get_id():
     valid = False
 
     while not valid:
+        id_ = input("enter your id")
         try:
-            if len(id_ != 9):
+            if len(id_) != 9:
+
                 raise TypeError
-            id_ = int(get_id2())
+            id_ = int(id_)
             valid = True
 
         except TypeError:

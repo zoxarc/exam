@@ -1,7 +1,6 @@
 from typing import Literal
 from pickle import loads, dumps
 from objects import Envelope
-import socket
 
 
 class Protocol:
@@ -30,3 +29,4 @@ class Protocol:
         size = int.from_bytes(my_socket.recv(Protocol.SIZE_BUFFER), Protocol.BYTE_ORDER)
         stream = my_socket.recv(size)
         return loads(stream)
+
