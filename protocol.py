@@ -29,3 +29,6 @@ class Protocol:
         stream = my_socket.recv(size)
         return loads(stream)
 
+    @staticmethod
+    def is_id(id_):
+        return not len(id_) != 9
