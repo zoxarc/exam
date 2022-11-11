@@ -9,3 +9,6 @@ class DoubleEnvelope:
 
     def __len__(self):
         return 1
+
+    def __str__(self):
+        return f'{self.name}:{self.envelope.notes[0].party}'

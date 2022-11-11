@@ -1,3 +1,5 @@
+import socket
+
 from sock_lib import AsyncServer
 from protocol import Protocol
 
@@ -23,7 +25,9 @@ def normal_count(env: Envelope):
 
 
 @s.event("client_message")
-async def on_client_message(sender, message):
+async def on_client_message(sender: socket.socket, message):
+    print(f'received {message} from {sender.getpeername()}')
+
     global double_envelopes
     # normal envelopes should be in a tuple containing id,name,envelope
 

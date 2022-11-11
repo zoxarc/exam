@@ -54,7 +54,11 @@ class AsyncServer:
         if connection is self.server:
             return
 
-        size = connection.recv(Protocol.SIZE_BUFFER)
+        try:
+            size = connection.recv(Protocol.SIZE_BUFFER)
+
+        except (ConnectionAbortedError, ConnectionResetError, TimeoutError, OSError):
+            return
 
         if size == b'':
             return
