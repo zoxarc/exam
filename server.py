@@ -46,7 +46,7 @@ async def on_client_message(sender: socket.socket, message):
         case 3:
             id_,name,env = message
             valid, party = env.status()
-            if id_ not in voters.items() and valid and {id_: name} in all_voters.items():
+            if id_ not in voters.items() and valid and (id_, name) in all_voters.items():
                 voters.update({id_: name})
                 normal_count(env)
                 s.running = False
