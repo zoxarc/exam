@@ -6,3 +6,6 @@ class DoubleEnvelope:
         self.envelope = envelope
         self.name = name
         self.id = id_
+
+    def __len__(self):
+        return 1

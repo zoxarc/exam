@@ -47,7 +47,7 @@ class AsyncServer:
         self.closed = AsyncServer.AsyncEvent()
 
     async def send_to(self, connection: socket, message):
-        Protocol.send_message(message, connection, self.loop)
+        await Protocol.send_message(message, connection, self.loop)
         self.server_message(target=connection, message=message)
 
     async def receive_from(self, connection):
@@ -71,7 +71,7 @@ class AsyncServer:
         try:
             await self.loop.sock_sendall(connection, b'ping')
 
-        except (BrokenPipeError, ConnectionResetError):
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
             self.disconnected.add(connection)
             ensure_future(self.remove_disconnected())
             self.client_disconnect(connection)

@@ -7,6 +7,7 @@ from clear_screen import clear
 class DoubleKalpi:
     def __init__(self):
         self.client = GeneralClient()
+        self.client.connect()
 
     def vote(self):
         party = input(f"choose a party:\n{', '.join(Protocol.PARTIES)} ")
