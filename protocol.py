@@ -18,12 +18,11 @@ class Protocol:
         return data in Protocol.PARTIES
 
     @staticmethod
-    def send_msg(my_socket, data):
+    async def send_message(data, connection, loop):
         stream = dumps(data)
-        size = len(stream)
-        size = int.to_bytes(size, Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER)
+        size = len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER)
 
-        my_socket.send(size + stream)
+        await loop.sock_sendall(connection, size + stream)
 
     @staticmethod
     def get_msg(my_socket):

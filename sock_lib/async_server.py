@@ -47,10 +47,7 @@ class AsyncServer:
         self.closed = AsyncServer.AsyncEvent()
 
     async def send_to(self, connection: socket, message):
-        stream = dumps(message)
-        size = len(stream).to_bytes(Protocol.SIZE_BUFFER, Protocol.BYTE_ORDER)
-        await self.loop.sock_sendall(connection, size + stream)
-
+        Protocol.send_message(message, connection, self.loop)
         self.server_message(target=connection, message=message)
 
     async def receive_from(self, connection):
