@@ -27,10 +27,19 @@ def get_id():
     return id_
 
 
+def server_running():
+    try:
+        client.send(b'ping')
+        return True
+
+    except Exception:
+        return False
+
+
 def main():
     votersdic = {123456789: "zohar", 987654321 : "yuval", 192837465 : "nerya", 918273645 : "shahar", 918273646 : "idotheking",918273649 : "yoavtheshovav"}
     client.connect()
-    while len(votersdic) != 0:
+    while len(votersdic) != 0 and server_running():
         while True:
             id_ = get_id()
             name = input("enter your name: ")
@@ -51,9 +60,5 @@ def main():
         sleep(0.5)
 
 
-
-
-
 if __name__ == '__main__':
-
     main()

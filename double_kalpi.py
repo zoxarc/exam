@@ -31,8 +31,17 @@ class DoubleKalpi:
 
         return True
 
+    def server_running(self):
+        try:
+            self.client.send(b'ping')
+            return True
+
+        except Exception:
+            return False
+
     def run(self):
-        while self.vote():
+        while self.server_running():
+            self.vote()
             clear()
 
 
