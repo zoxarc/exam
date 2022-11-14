@@ -3,6 +3,7 @@ from objects import Envelope
 from protocol import Protocol
 from objects import Note
 from time import sleep
+from clear_screen import clear
 
 client = GeneralClient()
 
@@ -11,7 +12,7 @@ def get_id():
     valid = False
 
     while not valid:
-        id_ = input("enter your id")
+        id_ = input("enter your id: ")
         try:
             if len(id_) != 9:
 
@@ -32,7 +33,7 @@ def main():
     while len(votersdic) != 0:
         while True:
             id_ = get_id()
-            name = input("enter your name")
+            name = input("enter your name: ")
             if (id_,name) in votersdic.items():
                 votersdic.pop(id_)
                 break
@@ -46,7 +47,9 @@ def main():
         # noinspection GrazieInspection
         env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
         client.send((id_,name,env))
+        clear()
         sleep(0.5)
+
 
 
 
