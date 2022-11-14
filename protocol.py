@@ -1,10 +1,9 @@
 from typing import Literal
 from pickle import loads, dumps
-from objects import Envelope
 
 
 class Protocol:
-    ADDRESS = ("127.0.0.1", 8080)
+    ADDRESS = ("172.16.4.118", 8080)
     SERVER_TIMEOUT = 0.1
     CLIENT_TIMEOUT = 0.1
     SIZE_BUFFER = 8
