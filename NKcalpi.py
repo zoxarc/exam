@@ -27,28 +27,26 @@ def get_id():
 
 
 def main():
-    votersdic = {123456789: "zohar", 987654321 : "yuval", 192837465 : "nerya", 918273645 : "shahar"}
+    votersdic = {123456789: "zohar", 987654321 : "yuval", 192837465 : "nerya", 918273645 : "shahar", 918273646 : "idotheking",918273649 : "yoavtheshovav"}
     client.connect()
+    while len(votersdic) != 0:
+        while True:
+            id_ = get_id()
+            name = input("enter your name")
+            if (id_,name) in votersdic.items():
+                votersdic.pop(id_)
+                break
+            else:
+                print("Sorry! You're not on the voter list")
+        for i in Protocol.PARTIES:
+            print(i)
 
-    while True:
-        id_ = get_id()  
-        name = input("enter your name")
-        if (id_,name) in votersdic:
-            votersdic.pop(id_)
-            break
-        elif len(votersdic) == 0:
-            return
-        else:
-            print("Sorry! You're not on the voter list")
-    for i in Protocol.PARTIES:
-        print(i)
-
-    chosen = input("choose your party: ")
-    notes = [Note(chosen)]
-    # noinspection GrazieInspection
-    env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
-    client.send((id_,name,env))
-    sleep(0.5)
+        chosen = input("choose your party: ")
+        notes = [Note(chosen)]
+        # noinspection GrazieInspection
+        env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
+        client.send((id_,name,env))
+        sleep(0.5)
 
 
 
