@@ -18,7 +18,7 @@ with open("voters.txt", "r") as f:
 
 def double_count(env: list[DoubleEnvelope]) -> dict:
     print(all_voters.items())
-    double_voters = [a for a in env if (a.id, a.name) in all_voters.items()]  # get all voters that haven't voted via a normal calpi
+    double_voters = [a for a in env if all_voters.pop(a.id, False) == a.name]  # get all voters that haven't voted via a normal calpi
     print(double_voters)
 
     for a in double_voters:
@@ -49,7 +49,7 @@ async def on_client_message(sender: socket.socket, message):
             if valid and (id_, name) in all_voters.items():
                 all_voters.pop(id_)
                 normal_count(env)
-                s.running = False
+
         case 1:
             if type(message) == objects.DoubleEnvelope:
                 valid, party = message.envelope.status()
