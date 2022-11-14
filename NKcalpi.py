@@ -20,7 +20,7 @@ def get_id():
             id_ = int(id_)
             valid = True
 
-        except TypeError:
+        except TypeError or ValueError:
             print("not a valid id")
 
     # noinspection PyUnboundLocalVariable
