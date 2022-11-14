@@ -30,8 +30,16 @@ def main():
     votersdic = {123456789: "zohar", 987654321 : "yuval", 192837465 : "nerya", 918273645 : "shahar"}
     client.connect()
 
-    id_ = get_id()  
-    name = input("enter your name")
+    while True:
+        id_ = get_id()  
+        name = input("enter your name")
+        if (id_,name) in votersdic:
+            votersdic.pop(id_)
+            break
+        elif len(votersdic) == 0:
+            return
+        else:
+            print("Sorry! You're not on the voter list")
     for i in Protocol.PARTIES:
         print(i)
 
@@ -39,13 +47,9 @@ def main():
     notes = [Note(chosen)]
     # noinspection GrazieInspection
     env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
-    wvoted(get_id(), name, votersdic)
     client.send((id_,name,env))
     sleep(0.5)
 
-def wvoted(id : int, name: str, votersdic: dict):
-    if name in votersdic.items() and  id in votersdic.keys():
-        votersdic.pop(id)
 
 
 
