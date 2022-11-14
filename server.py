@@ -22,14 +22,22 @@ def double_count(env: list[DoubleEnvelope]) -> dict:
     print(double_voters)
 
     for a in double_voters:
-        votes[a.envelope.notes[0].party] += 1
+        try:
+            votes[a.envelope.notes[0].party] += 1
+
+        except KeyError:
+            print("invalid party")
 
     return None  # TODO: return something
 
 
 def normal_count(env: Envelope):
     global votes
-    votes[env.notes[0].party] += 1
+    try:
+        votes[env.notes[0].party] += 1
+
+    except KeyError:
+        print("invalid vote")
 
 
 @s.event("client_message")
