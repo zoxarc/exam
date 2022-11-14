@@ -21,7 +21,7 @@ def get_id():
             valid = True
 
         except TypeError or ValueError:
-            print("not a valid id")
+            print("not a valid id or you are al ready voted")
 
     # noinspection PyUnboundLocalVariable
     return id_
@@ -37,13 +37,13 @@ def server_running():
 
 
 def main():
-    votersdic = {123456789: "zohar", 987654321 : "yuval", 192837465 : "nerya", 918273645 : "shahar", 918273646 : "idotheking",918273649 : "yoavtheshovav"}
+    votersdic = {123456789: "zohar", 987654321: "yuval", 192837465: "nerya", 918273645: "shahar", 918273646: "idotheking", 918273649: "yoavtheshovav"}
     client.connect()
     while len(votersdic) != 0 and server_running():
         while True:
             id_ = get_id()
             name = input("enter your name: ")
-            if (id_,name) in votersdic.items():
+            if (id_, name) in votersdic.items():
                 votersdic.pop(id_)
                 break
             else:
@@ -55,7 +55,7 @@ def main():
         notes = [Note(chosen)]
         # noinspection GrazieInspection
         env = Envelope(notes)  # Envelopes do not contain an id, idk why, ask eli
-        client.send((id_,name,env))
+        client.send((id_, name, env))
         clear()
         sleep(0.5)
 

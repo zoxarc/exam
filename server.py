@@ -52,7 +52,7 @@ async def on_client_message(sender: socket.socket, message):
 
     match len(message):
         case 3:
-            id_,name,env = message
+            id_, name, env = message
             valid, party = env.status()
             if valid and (id_, name) in all_voters.items():
                 all_voters.pop(id_)

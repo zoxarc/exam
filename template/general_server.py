@@ -4,7 +4,7 @@ from socket import create_server, socket
 from pickle import dumps, loads
 
 from protocol import Protocol
-from template import Event, Handle
+from template import Event
 from template.type_hints import func
 
 
