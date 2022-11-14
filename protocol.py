@@ -3,7 +3,7 @@ from pickle import loads, dumps
 
 
 class Protocol:
-    ADDRESS = ("172.16.18.49", 8081)
+    ADDRESS = ("172.16.14.0", 8081)
     SERVER_TIMEOUT = 0.1
     CLIENT_TIMEOUT = 0.1
     SIZE_BUFFER = 8
